@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Farm2House</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Garamond, sans-serif;
+      font-size: 22.9px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image: url('interfaceimage.png'); /* Your custom image */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    /* Light transparent overlay */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.5); /* Light white overlay */
+      z-index: 0;
+    }
+
+    .overlay {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header {
+      height: 33.33%;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #2e7d32;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3em;
+      font-weight: bold;
+      gap: 20px;
+      padding: 10px;
+      backdrop-filter: blur(4px);
+    }
+
+    .header img {
+      height: 100px;
+      width: 100px;
+      border-radius: 90%;
+    }
+
+    .login-sections {
+      height: 66.66%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .login-button {
+      padding: 30px 60px;
+      font-size: 1.5em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, 0.85);
+      color: #2e7d32;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 250px;
+      height: 100px;
+      text-align: center;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .login-button:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="header">
+      <img src="logoimage.png" alt="Farm2House Logo">
+      Farm2House
+    </div>
+
+    <div class="login-sections">
+      <a href="consumerlogin.html" class="login-button">Consumer Login</a>
+      <a href="agentlogin.html" class="login-button">Agent Login</a>
+    </div>
+  </div>
+</body>
+</html>

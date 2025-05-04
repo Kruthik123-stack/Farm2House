@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Farmer Interface</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Garamond, sans-serif;
+      background-image: url('farmerimage.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      color: #333;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.7);
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #388E3C;
+      margin-bottom: 30px;
+    }
+
+    .entry-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    select, input[type="number"] {
+      padding: 8px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .remove-button, .add-button-inline {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .remove-button {
+      background-color: #e53935;
+    }
+
+    .remove-button:hover {
+      background-color: #b71c1c;
+      transform: scale(1.05);
+    }
+
+    .add-button-inline:hover {
+      background-color: #388e3c;
+      transform: scale(1.05);
+    }
+
+    .submit-button, .final-submit-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s, transform 0.2s;
+      margin-right: 10px;
+    }
+
+    .submit-button:hover, .final-submit-button:hover {
+      background-color: #388e3c;
+      transform: scale(1.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    td {
+      background-color: #f9f9f9;
+    }
+
+    #summaryTable {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Agent Crop Entry</h1>
+
+    <div id="entriesContainer">
+      <div class="entry-row">
+        <select class="category-select" onchange="updateCropOptions(this)">
+          <option value="" disabled selected>Select Category</option>
+          <option value="Vegetable">Vegetable</option>
+          <option value="Fruit">Fruit</option>
+        </select>
+
+        <select class="crop-select" disabled>
+          <option value="">Select Crop</option>
+        </select>
+
+        <input type="number" placeholder="Quantity (kg)" min="1" />
+        <button class="add-button-inline">Add</button>
+        <button class="remove-button">Remove</button>
+      </div>
+    </div>
+
+    <button class="submit-button" onclick="submitEntries()">Submit</button>
+
+    <div id="summaryTable"></div>
+  </div>
+
+  <script>
+    const cropOptions = {
+      Vegetable: [
+        'Tomato', 'Potato', 'Onion', 'Carrot', 'Cabbage', 'Spinach', 'Broccoli',
+        'Cauliflower', 'Cucumber', 'Pumpkin', 'Garlic', 'Ginger', 'Peas', 'Bell Pepper', 'Eggplant', 'Lettuce', 'Radish', 'Zucchini', 'Okra'
+      ],
+      Fruit: [
+        'Apple', 'Banana', 'Mango', 'Orange', 'Papaya', 'Grapes', 'Pineapple',
+        'Watermelon', 'Guava', 'Lychee', 'Pear', 'Peach', 'Plum', 'Kiwi',
+        'Strawberry', 'Cherry', 'Pomegranate', 'Fig', 'Coconut', 'Avocado'
+      ]
+    };
+
+    function updateCropOptions(categorySelect) {
+      const cropSelect = categorySelect.parentElement.querySelector('.crop-select');
+      const selectedCategory = categorySelect.value;
+
+      cropSelect.innerHTML = '<option value="">Select Crop</option>';
+
+      if (cropOptions[selectedCategory]) {
+        cropOptions[selectedCategory].forEach(crop => {
+          const option = document.createElement('option');
+          option.value = crop;
+          option.textContent = crop;
+          cropSelect.appendChild(option);
+        });
+        cropSelect.disabled = false;
+      } else {
+        cropSelect.disabled = true;
+      }
+    }
+
+    function createEntryRow() {
+      const entryRow = document.createElement('div');
+      entryRow.className = 'entry-row';
+
+      entryRow.innerHTML = `
+        <select class="category-select" onchange="updateCropOptions(this)">
+          <option value="" disabled selected>Select Category</option>
+          <option value="Vegetable">Vegetable</option>
+          <option value="Fruit">Fruit</option>
+        </select>
+
+        <select class="crop-select" disabled>
+          <option value="">Select Crop</option>
+        </select>
+
+        <input type="number" placeholder="Quantity (kg)" min="1" />
+        <button class="add-button-inline">Add</button>
+        <button class="remove-button">Remove</button>
+        
+      `;
+
+      // Add event listeners
+      entryRow.querySelector('.remove-button').addEventListener('click', () => {
+        entryRow.remove();
+      });
+
+      entryRow.querySelector('.add-button-inline').addEventListener('click', () => {
+        const newEntry = createEntryRow();
+        entryRow.after(newEntry);
+      });
+
+      return entryRow;
+    }
+
+    document.querySelectorAll('.remove-button').forEach(button => {
+      button.addEventListener('click', function () {
+        this.parentElement.remove();
+      });
+    });
+
+    document.querySelectorAll('.add-button-inline').forEach(button => {
+      button.addEventListener('click', function () {
+        const newEntry = createEntryRow();
+        this.parentElement.after(newEntry);
+      });
+    });
+
+    function submitEntries() {
+      const entries = document.querySelectorAll('#entriesContainer .entry-row');
+      let summaryHTML = `<h2>Summary of Entries</h2><table><tr><th>Category</th><th>Crop</th><th>Quantity (kg)</th></tr>`;
+      let validEntries = 0;
+
+      entries.forEach(entry => {
+        const category = entry.querySelector('.category-select').value;
+        const crop = entry.querySelector('.crop-select').value;
+        const quantity = entry.querySelector('input').value;
+
+        if (category && crop && quantity > 0) {
+          summaryHTML += `<tr><td>${category}</td><td>${crop}</td><td>${quantity}</td></tr>`;
+          validEntries++;
+        }
+      });
+
+      summaryHTML += '</table>';
+
+      if (validEntries > 0) {
+        summaryHTML += `<button class="final-submit-button" onclick="finalSubmit()">Final Submit</button>`;
+        document.getElementById('summaryTable').innerHTML = summaryHTML;
+      } else {
+        alert("Please fill all entries properly!");
+      }
+    }
+
+    function finalSubmit() {
+  const entries = document.querySelectorAll('#entriesContainer .entry-row');
+  const orders = [];
+
+  entries.forEach((entry, index) => {
+    const category = entry.querySelector('.category-select').value;
+    const crop = entry.querySelector('.crop-select').value;
+    const quantity = entry.querySelector('input').value;
+
+    if (category && crop && quantity > 0) {
+      orders.push({
+        customerSerial: index + 1,
+        category,
+        crop,
+        quantity
+      });
+    }
+  });
+
+  localStorage.setItem('orders', JSON.stringify(orders));
+  window.location.href = 'receivedorders.html';
+}
+
+  </script>
+</body>
+</html>
